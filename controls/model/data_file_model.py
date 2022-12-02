@@ -1,4 +1,5 @@
 from app import db
+from user_model import User
 
 class Data_File(db.Model) :
 
@@ -15,7 +16,8 @@ class Data_File(db.Model) :
     file_extension = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.String(50), nullable=False)
     updated_at = db.Column(db.String(50))
-    id_user_create = db.Column(db.Integer, nullable=False)
+    id_user_create = db.Column(db.Integer, db.ForeignKey("user.id"))
     id_user_update = db.Column(db.Integer)
 
+    user = db.relationship(User, back_populates="data_files")
     configs = db.relationship('Config', secondary=association_table, backref="data_file")
