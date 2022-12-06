@@ -1,4 +1,5 @@
 from app import db
+from user_model import User
 
 class Config(db.Model) :
 
@@ -9,5 +10,10 @@ class Config(db.Model) :
     id_public = db.Column(db.String(100), unique=True, nullable=False)
     created_at = db.Column(db.String(50), nullable=False)
     updated_at = db.Column(db.String(50))
-    id_user_create = db.Column(db.Integer, nullable=False)
+    id_user_create = db.Column(db.Integer, db.ForeignKey("user.id"))
     id_user_update = db.Column(db.Integer)
+
+    user = db.relationship(User, back_populates="configs")
+
+
+    
