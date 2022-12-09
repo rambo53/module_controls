@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from controls.services.config_service import get_configs_service, get_config_service, add_config_service
+from controls.services.config_service import get_configs_service, get_config_service, add_config_service, update_config_service
 config_route = Blueprint('config', __name__)
 
 @config_route.route("/configs", methods=['GET'])
@@ -11,6 +11,11 @@ def get_config(id_public):
     return get_config_service(id_public)
 
 @config_route.route("/config", methods=['POST'])
-def add_method():
+def add_config():
     data = request.get_json()
     return add_config_service(data)
+
+@config_route.route("/config", methods=['PATCH'])
+def update_config():
+    data = request.get_json()
+    return update_config_service(data)
