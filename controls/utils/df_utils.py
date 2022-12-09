@@ -1,5 +1,6 @@
 from controls.utils.directory_utils import get_file_extension
 import pandas as pd
+import sys
 
 class Df_Utils():
 
@@ -38,5 +39,5 @@ class Df_Utils():
         return df.shape[1]
 
     def get_first_rows(self, df):
-        df = df.loc[0:4].fillna("NaN")
-        return df.to_html(justify='center',classes='table text-center')
+        df = df.iloc[0:4].fillna("NaN")
+        return df.to_html(justify='center',classes='table text-center',index=False)
