@@ -12,29 +12,31 @@ def get_data_files_service():
     try:
         data_files = Data_File.query.all()
         list_data_files = []
+
         for data_file in data_files:
 
-            lst_config = []
+            lst_configs = data_file.configs.all()
+            configs = []
+            
+            if len(lst_configs) > 0:
 
-            if len(data_file.configs) > 0:
-
-                for config in data_file.configs:
+                for config in lst_configs:
                     new_dict_config = {
                         'id':config.id_public,
                         'name':config.name,
                         'config_user_create':config.user.name,
                     }
-                    lst_config.append(new_dict_config)
+                    configs.append(new_dict_config)
             
             new_dict_data_file = {
                 'id':data_file.id_public,
                 'user_name': data_file.user.name,
                 'file_name':data_file.file_name,
-                'configs': lst_config
+                'configs': configs
             }
 
             list_data_files.append(new_dict_data_file)
-
+        
         return jsonify(list_data_files)
     except Exception as e:
         return jsonify({'message' : str(e), "status":404})
