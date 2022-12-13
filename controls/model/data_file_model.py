@@ -20,4 +20,4 @@ class Data_File(db.Model) :
     id_user_update = db.Column(db.Integer)
 
     user = db.relationship(User, back_populates="data_files")
-    configs = db.relationship('Config', secondary=association_table, backref="data_file")
+    configs = db.relationship('Config', secondary=association_table, lazy='dynamic', backref="data_file")
