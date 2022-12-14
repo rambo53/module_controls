@@ -1,4 +1,5 @@
 from controls.model.data_file_model import Data_File
+from controls.model.config_model import Config
 from controls.utils.directory_utils import create_directory, get_file_extension, get_filename
 from controls.utils.date_utils import get_datetime
 from controls.utils.fake_data_utils import get_fake_id_user
@@ -6,6 +7,7 @@ from controls.utils.df_utils import Df_Utils
 from flask import jsonify
 import uuid
 from app import db
+import ast
 import sys
 
 def get_data_files_service():
@@ -45,12 +47,38 @@ def get_data_files_service():
 def get_data_file_service(id_public):
     try:
         data_file = Data_File.query.filter(Data_File.id_public==id_public).first_or_404()
+        
         model = {
             'id': data_file.id_public,
             'name': data_file.file_name,
             'nb_rows': data_file.nb_rows,
             'nb_cols':data_file.nb_cols,
             'first_rows':data_file.first_rows,
+            
+        }
+        return jsonify(model)
+    except Exception as e:
+        return jsonify({'message' : str(e), "status":404})
+
+
+def get_data_file_with_config_service(id_file, id_config):
+    try:
+        data_file = Data_File.query.filter(Data_File.id_public==id_file).first_or_404()
+        config = data_file.configs.filter(Config.id_public == id_config).first_or_404()
+
+        config_dict = {
+            'id': config.id_public,
+            'name': config.name,
+            'config_dict': ast.literal_eval(config.config_dict)
+        }
+
+        model = {
+            'id': data_file.id_public,
+            'name': data_file.file_name,
+            'nb_rows': data_file.nb_rows,
+            'nb_cols':data_file.nb_cols,
+            'first_rows':data_file.first_rows,
+            'config': config_dict
         }
         return jsonify(model)
     except Exception as e:
