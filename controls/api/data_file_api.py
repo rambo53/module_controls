@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from controls.services.data_file_service import get_data_files_service, add_data_files_service, get_data_file_service
+from controls.services.data_file_service import get_data_files_service, add_data_files_service, get_data_file_service, get_data_file_with_config_service
 
 data_file_route = Blueprint('data_file', __name__)
 
@@ -10,6 +10,10 @@ def get_data_files():
 @data_file_route.route("/data_file/<id_public>", methods=['GET'])
 def get_data_file(id_public):
     return get_data_file_service(id_public)
+
+@data_file_route.route("/data_file/<id_file>/config/<id_config>", methods=['GET'])
+def get_data_file_with_config(id_file, id_config):
+    return get_data_file_with_config_service(id_file, id_config)
 
 @data_file_route.route("/data_file", methods=['POST'])
 def add_data_files():
