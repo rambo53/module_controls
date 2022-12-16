@@ -6,7 +6,8 @@ class Df_Utils():
 
     def __init__(self, file_path):
         file_to_df = self.get_df(file_path)
-        self.nb_rows = self.get_nb_rows(file_to_df)
+        self.df_from_file = file_to_df
+        self.nb_rows = Df_Utils.get_nb_rows(file_to_df)
         self.nb_cols = self.get_nb_cols(file_to_df)
         self.first_rows = self.get_first_rows(file_to_df)
 
@@ -31,8 +32,8 @@ class Df_Utils():
         except FileNotFoundError:
             return "Le fichier n'a pas été trouvé."
 
-
-    def get_nb_rows(self, df):
+    @staticmethod
+    def get_nb_rows(df):
         return df.shape[0]
 
     def get_nb_cols(self, df):
@@ -41,3 +42,7 @@ class Df_Utils():
     def get_first_rows(self, df):
         df = df.iloc[0:4].fillna("NaN")
         return df.to_html(justify='center',classes='table text-center',index=False)
+
+    @staticmethod
+    def df_to_csv(df, path):
+        df.to_csv(path, sep=";")
